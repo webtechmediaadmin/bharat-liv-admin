@@ -151,7 +151,7 @@
               content.appendChild(userDiv);
 
               userDiv.addEventListener("click", () => {
-                console.log(item.id);
+                window.location.href = `videoList.html?token=${token}&id=${item.id}`;
               });
             });
           })

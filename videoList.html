@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <link rel="stylesheet" href="./css/topNav.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit&display=swap" rel="stylesheet" />
+    <style>
+        /* Your existing styles */
+        body {
+            margin: 0;
+            font-family: outfit;
+        }
+
+        .content-box {
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+                rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+            margin: 1%;
+            padding: 2%;
+            border-radius: 5px;
+        }
+
+        /* Content Styles */
+        #content {
+            margin-left: 20px;
+            margin-right: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        tr {
+            border: 1px solid #ccc;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .more-options-cell {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .more-options-cell button {
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.4s;
+        }
+
+        input:checked+.slider {
+            background-color: #2196f3;
+        }
+
+        input:focus+.slider {
+            box-shadow: 0 0 1px #2196f3;
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(26px);
+        }
+
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        #editFormContainer {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, 100%);
+            /* Start the form below the visible area */
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            animation: slideUp 0.5s forwards;
+            /* Add the animation */
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translate(-50%, 100%);
+                /* Start position */
+            }
+
+            to {
+                transform: translate(-50%, -50%);
+                /* End position */
+            }
+        }
+
+        #editFormContainer form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        #editFormContainer input,
+        #editFormContainer textarea,
+        #editFormContainer select {
+            width: 90%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #editFormContainer button {
+            padding: 10px;
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #editFormContainer button:hover {
+            background-color: #4cae4c;
+        }
+
+        #editFormContainer #closeEditForm {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            padding: 5px;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main-container">
+        <!-- Top Navigation Bar -->
+        <div id="topNav">
+            <div id="hamburger">&#9776;</div>
+            <div>
+                <h1 id="welcomeName"></h1>
+            </div>
+            <div id="imageClick">
+                <img id="profileImg" src="" alt="Profile Image" />
+            </div>
+        </div>
+        <div id="hiddenFeatures">
+            <div>Your Account</div>
+            <div>Logout</div>
+        </div>
+        <!-- Side Navigation Bar -->
+        <div id="sideNav">
+            <a href="#" class="closeBtn">&times;</a>
+            <a href="./home.html">Home</a>
+            <a href="./registerSpeaker.html">Register Speaker</a>
+            <a href="./videoUpload.html">Video Upload</a>
+            <a href="./videoList.html">All Videos</a>
+            <a href="./speakerList.html">Speaker's List</a>
+            <a href="./userlist.html">User's List</a>
+        </div>
+        <!-- MAIN CONTENT OF THE HOME PAGE -->
+        <div id="content">
+            <div style="width: 100%; margin-top: 1%">
+                <div style="display: flex; justify-content: space-around">
+                    <select name="speakers" id="speakers">
+                        <option value="">Choose Speakers</option>
+                    </select>
+                    <select name="videoStatus" id="videoStatus">
+                        <option value="">Choose Videos Active</option>
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                    <div>
+                        <input type="search" name="" id="" />
+                        <button>Search</button>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <td>Title</td>
+                            <td>Category Name</td>
+                            <td>Thumb Nail</td>
+                            <td>Video Link</td>
+                            <td>Status</td>
+                            <td>More Options</td>
+                        </tr>
+                    </thead>
+                    <tbody id="videoTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="editFormContainer">
+        <button id="closeEditForm" aria-label="Close">&#10005;</button>
+        <form id="editForm" enctype="multipart/form-data">
+            <input type="hidden" id="editId" name="id" />
+            <label for="editTitle">Title</label>
+            <input type="text" id="editTitle" name="title" required />
+            <label for="editThumbNail">Thumbnail</label>
+            <input type="file" id="editThumbNail" name="thumbNail" accept="image/*" />
+            <label for="editVideo">Video Link</label>
+            <input type="file" id="editVideo" name="video" accept="video/*" />
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+
+    <script>
+        const hamburger = document.getElementById("hamburger");
+        const sideNav = document.getElementById("sideNav");
+        const closeBtn = document.querySelector(".closeBtn");
+        const imageClick = document.querySelector("#imageClick");
+        const hiddenFeatures = document.querySelector("#hiddenFeatures");
+        const content = document.querySelector("#content");
+        const videoTableBody = document.getElementById("videoTableBody");
+        const editFormContainer = document.getElementById("editFormContainer");
+        const editForm = document.getElementById("editForm");
+
+        hamburger.addEventListener("click", () => {
+            sideNav.style.width = "250px";
+            content.style.transition = "margin-left 0.5s"; // Added transition
+            content.style.marginLeft = "22%";
+        });
+
+        closeBtn.addEventListener("click", () => {
+            sideNav.style.width = "0";
+            content.style.transition = "margin-left 0.5s"; // Added transition
+            content.style.marginLeft = "20px";
+        });
+
+        imageClick.addEventListener("click", () => {
+            hiddenFeatures.style.display =
+                hiddenFeatures.style.display === "block" ? "none" : "block";
+        });
+
+        let mainContainer = document.getElementById("main-container");
+        let profileImg = document.getElementById("profileImg");
+        let welcomeName = document.getElementById("welcomeName");
+        let closeEditForm = document.getElementById("closeEditForm");
+        let token = sessionStorage.getItem("super-admin-token");
+
+        closeEditForm.addEventListener("click", () => {
+            editFormContainer.style.display = "none";
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            if (!token) {
+                alert("You are not logged in, please log in again!");
+                window.location.href = "./index.html";
+            }
+
+            fetchUsersData(token);
+            fetchVideos();
+        });
+
+        function fetchUsersData(token) {
+            fetch("http://13.235.49.6:9000/api/users/my-profile", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    profileImg.src = data.data.image;
+                    welcomeName.innerText = data.data.name;
+                });
+        }
+
+        function fetchVideos() {
+    fetch("http://13.235.49.6:9000/api/content/get-content/super-admin", {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+        },
+    })
+    .then((res) => res.json())
+    .then((data) => {
+        data.data.forEach((element, index) => {
+            const newRow = videoTableBody.insertRow(); // Create a new row in the table
+            newRow.setAttribute('data-id', element.id);
+            
+            // Navigate to videoBox.html when the row is clicked (except for the edit and delete buttons)
+            newRow.addEventListener("click", (event) => {
+                if (!event.target.closest(".more-options-cell") && !event.target.closest(".switch")) {
+                    window.location.href = `videoBox.html?id=${element.id}`;
+                }
+            });
+
+            // Insert cells and add content to the row
+            newRow.insertCell().textContent = element.title;
+            newRow.cells[0].style.width = "200px";
+            newRow.insertCell().textContent = element.category.title;
+            newRow.insertCell().innerHTML = `<img src="${element.thumbNail}" alt="Thumbnail" width="100" height="100">`;
+            newRow.insertCell().innerHTML = `<a href="${element.video}" target="_blank">Watch Video</a>`;
+
+            // Create status switch
+            const statusCell = newRow.insertCell();
+            const statusSwitch = document.createElement("label");
+            statusSwitch.classList.add("switch");
+
+            const statusInput = document.createElement("input");
+            statusInput.type = "checkbox";
+            statusInput.checked = element.status;
+            statusSwitch.appendChild(statusInput);
+
+            const statusSlider = document.createElement("span");
+            statusSlider.classList.add("slider", "round");
+            statusSwitch.appendChild(statusSlider);
+
+            statusCell.appendChild(statusSwitch);
+
+            statusSwitch.addEventListener("change", () => {
+                statusChanger(element.id);
+            });
+
+            // Create more options cell with edit and delete buttons
+            const moreOptionsCell = newRow.insertCell();
+            moreOptionsCell.classList.add("more-options-cell");
+
+            const editBtn = document.createElement("button");
+            editBtn.textContent = "Edit";
+            editBtn.addEventListener("click", (event) => {
+                event.stopPropagation(); // Prevent the row click event
+                openEditForm(element);
+            });
+
+            const deleteBtn = document.createElement("button");
+            deleteBtn.textContent = "Delete";
+            deleteBtn.style.backgroundColor = "red";
+            deleteBtn.style.color = "white";
+            deleteBtn.addEventListener("click", (event) => {
+                event.stopPropagation(); // Prevent the row click event
+                const parentRow = deleteBtn.closest("tr");
+                parentRow.classList.add("fade-out");
+                parentRow.addEventListener("animationend", () => {
+                    parentRow.remove();
+                });
+                deleteVideo(element.id);
+            });
+
+            moreOptionsCell.appendChild(editBtn);
+            moreOptionsCell.appendChild(deleteBtn);
+        });
+    });
+}
+
+
+        function statusChanger(id) {
+            fetch(`http://13.235.49.6:9000/api/content/handle-status/${id}`, {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log(data);
+                });
+        }
+
+        function deleteVideo(id) {
+            fetch(`http://13.235.49.6:9000/api/content/delete-content/${id}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log(data);
+                });
+        }
+
+        function openEditForm(videoData) {
+            editFormContainer.style.display = "block";
+            editForm.editId.value = videoData.id;
+            editForm.editTitle.value = videoData.title;
+            editForm.editThumbNail.value = "";
+            editForm.editVideo.value = "";
+            editForm.editStatus.value = videoData.status ? "true" : "false";
+        }
+
+        editForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const formData = new FormData(editForm);
+            updateVideoData(formData);
+        });
+
+        function updateVideoData(formData) {
+            fetch(
+                `http://13.235.49.6:9000/api/content/edit-content/${formData.get(
+                    "id"
+                )}`,
+                {
+                    method: "PATCH",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: formData,
+                }
+            )
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log(data);
+                    location.reload(); // Reload the page to reflect changes
+                })
+                .catch((error) => console.error("Error:", error));
+        }
+    </script>
+    <script src="./js/overall.js"></script>
+</body>
+
+</html>

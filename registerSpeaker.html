@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registration</title>
+    <link rel="stylesheet" href="./css/topNav.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            margin: 0;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        #content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            height: 99%;
+            background-color: #f4f4f4;
+        }
+
+        .form-container {
+            background-color: #fff;
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+            padding: 1%;
+            margin-top: 1%;
+            border-radius: 10px;
+            width: 80%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .form-group input, 
+        .form-group textarea, 
+        .form-group select {
+            width: 98%;
+            padding: 10px;
+            border: 1px solid #612626;
+            border-radius: 5px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+        }
+
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: #5cb85c;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .form-group button:hover {
+            background-color: #4cae4c;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main-container">
+        <!-- Top Navigation Bar -->
+        <div id="topNav">
+            <div id="hamburger">&#9776;</div>
+            <div>
+                <h1 id="welcomeName"></h1>
+            </div>
+            <div id="imageClick">
+                <img id="profileImg" src="" alt="Profile Image" />
+            </div>
+        </div>
+        <div id="hiddenFeatures">
+            <div>Your Account</div>
+            <div>Logout</div>
+        </div>
+        <!-- Side Navigation Bar -->
+        <div id="sideNav">
+            <a href="#" class="closeBtn">&times;</a>
+            <a href="./home.html">Home</a>
+            <a href="./registerSpeaker.html">Register Speaker</a>
+            <a href="./videoUpload.html">Video Upload</a>
+            <a href="./videoList.html">All Videos</a>
+            <a href="./speakerList.html">Speaker's List</a>
+            <a href="./userlist.html">User's List</a>
+        </div>
+        <!-- MAIN CONTENT OF THE HOME PAGE -->
+        <div id="content">
+            <div class="form-container">
+                <h1>Register</h1>
+                <form id="registrationForm">
+                    <div class="form-group">
+                        <label for="image">Image</label>
+                        <input type="file" id="image" name="image" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bio">Bio</label>
+                        <textarea id="bio" name="bio" rows="4" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit">Register</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const hamburger = document.getElementById("hamburger");
+        const sideNav = document.getElementById("sideNav");
+        const closeBtn = document.querySelector(".closeBtn");
+        const imageClick = document.querySelector("#imageClick");
+        const hiddenFeatures = document.querySelector("#hiddenFeatures");
+        const content = document.querySelector("#content");
+
+        hamburger.addEventListener("click", () => {
+            sideNav.style.width = "250px";
+            content.style.transition = "margin-left 0.5s";
+            content.style.marginLeft = '20%';
+        });
+
+        closeBtn.addEventListener("click", () => {
+            sideNav.style.width = "0";
+            content.style.transition = "margin-left 0.5s";
+            content.style.marginLeft = '0%';
+        });
+
+        imageClick.addEventListener("click", () => {
+            hiddenFeatures.style.display = hiddenFeatures.style.display === "block" ? "none" : "block";
+        });
+
+        let mainContainer = document.getElementById("main-container");
+        let profileImg = document.getElementById("profileImg");
+        let welcomeName = document.getElementById("welcomeName");
+        let token = sessionStorage.getItem("super-admin-token");
+
+        document.addEventListener("DOMContentLoaded", () => {
+            if (!token) {
+                alert("You are not logged in, please log in again!");
+                window.location.href = "./index.html";
+            }
+
+            fetchUsersData(token);
+            fetchApprovedCount(token);
+            fetchPostedCount(token);
+            fetchNotApprovedCount(token);
+        });
+
+        function fetchUsersData(token) {
+            fetch("http://13.235.49.6:9000/api/users/my-profile", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    profileImg.src = data.data.image;
+                    welcomeName.innerText = data.data.name;
+                });
+        }
+
+        function fetchApprovedCount(token) {
+            fetch("http://13.235.49.6:9000/api/content/videos?hasApprovedByAdmin=1", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    videoPostedCount.innerText = data.count;
+                });
+        }
+
+        function fetchPostedCount(token) {
+            fetch("http://13.235.49.6:9000/api/content/get-content/super-admin", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    videoApprovedCount.innerText = data.count;
+                });
+        }
+
+        function fetchNotApprovedCount(token) {
+            fetch("http://13.235.49.6:9000/api/content/videos?hasApprovedByAdmin=0", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    videoNotApprovedCount.innerText = data.count;
+                });
+        }
+
+        // Registration Form Submission
+        const registrationForm = document.getElementById('registrationForm');
+        registrationForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(registrationForm);
+            formData.append('role','manager')
+
+            fetch('http://13.235.49.6:9000/api/users/email-register', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status) {
+                    alert('Registration successful!');
+                    registrationForm.reset();
+                } else {
+                    alert('Registration failed: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Registration failed: ' + error.message);
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <link rel="stylesheet" href="./css/topNav.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            margin: 0;
+            font-family: outfit;
+        }
+
+
+        #content {
+            display: flex;
+        }
+
+        .content-box {
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+            margin: 1%;
+            padding: 2%;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main-container">
+        <!-- Top Navigation Bar -->
+        <div id="topNav">
+            <div id="hamburger">&#9776;</div>
+            <div>
+                <h1 id="welcomeName"></h1>
+            </div>
+            <div id="imageClick">
+                <img id="profileImg" src="" alt="Profile Image" />
+            </div>
+        </div>
+        <div id="hiddenFeatures">
+            <div>Your Account</div>
+            <div>Logout</div>
+        </div>
+        <!-- Side Navigation Bar -->
+        <div id="sideNav">
+            <a href="#" class="closeBtn">&times;</a>
+            <a href="./home.html">Home</a>
+            <a href="./registerSpeaker.html">Register Speaker</a>
+            <a href="./videoUpload.html">Video Upload</a>
+            <a href="./videoList.html">All Videos</a>
+            <a href="./speakerList.html">Speaker's List</a>
+            <a href="./userlist.html">User's List</a>
+        </div>
+        <!-- MAIN CONTENT OF THE HOME PAGE -->
+        <div id="content">
+            <div class="content-box">
+                <h1>Total Video Posted</h1>
+                <h2></h2>
+            </div>
+            <div class="content-box">
+                <h1>Total Video Approved</h1>
+                <h2></h2>
+            </div>
+            <div class="content-box">
+                <h1>Total Video Pending</h1>
+                <h2></h2>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const hamburger = document.getElementById("hamburger");
+        const sideNav = document.getElementById("sideNav");
+        const closeBtn = document.querySelector(".closeBtn");
+        const imageClick = document.querySelector("#imageClick");
+        const hiddenFeatures = document.querySelector("#hiddenFeatures");
+        const content = document.querySelector("#content");
+
+        hamburger.addEventListener("click", () => {
+            sideNav.style.width = "250px";
+            content.style.transition = "margin-left 0.5s"; // Added transition
+            content.style.marginLeft = '20%';
+        });
+
+        closeBtn.addEventListener("click", () => {
+            sideNav.style.width = "0";
+            content.style.transition = "margin-left 0.5s"; // Added transition
+            content.style.marginLeft = '0%';
+        });
+
+
+        imageClick.addEventListener("click", () => {
+            hiddenFeatures.style.display = hiddenFeatures.style.display === "block" ? "none" : "block";
+        });
+
+        let mainContainer = document.getElementById("main-container");
+        let profileImg = document.getElementById("profileImg");
+        let welcomeName = document.getElementById("welcomeName");
+        let token = sessionStorage.getItem("super-admin-token");
+
+        document.addEventListener("DOMContentLoaded", () => {
+            if (!token) {
+                alert("You are not logged in, please log in again!");
+                window.location.href = "./index.html";
+            }
+
+            fetchUsersData(token);
+        });
+
+        // Fetch data of the User
+        function fetchUsersData(token) {
+            fetch("http://13.235.49.6:9000/api/users/my-profile", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log(data);
+                    profileImg.src = data.data.image;
+                    welcomeName.innerText = data.data.name;
+                });
+        }
+    </script>
+    <script src="./js/overall.js"></script>
+</body>
+
+</html>

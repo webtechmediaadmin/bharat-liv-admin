@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <link rel="stylesheet" href="./css/topNav.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit&display=swap" rel="stylesheet" />
+    <style>
+        /* Global Styles */
+        body {
+            margin: 0;
+            font-family: outfit;
+        }
+
+        #content {
+            /* border: 1px solid black; */
+            padding: 1%;
+            display: flex;
+        }
+
+        #videoBox {
+            border: 1px solid black;
+            border-radius: 10px;
+            width: 70%;
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #referenceVideos {
+            margin-left: 1%;
+        }
+
+        #otherVideoLink {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .other-video {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .other-video img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .speakerBox {
+            /* width: 19%; */
+            display: flex;
+            align-items: center;
+            gap: 1%
+        }
+
+        .commentBox {
+            width: 11%;
+            gap: 4%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        #speakerImage {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .commentBoxImage {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .comment {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .comment img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        .comment .comment-info {
+            flex-grow: 1;
+        }
+
+        .comment .comment-info p {
+            margin: 0;
+        }
+
+        .comment .comment-info .comment-username {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .comment .comment-info .comment-text {
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .comment .comment-options {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .comment .comment-options .comment-date {
+            color: #888;
+            font-size: 12px;
+        }
+
+        .comment .comment-options .comment-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .comment .comment-options .comment-actions button {
+            border: none;
+            background-color: transparent;
+            color: #888;
+            cursor: pointer;
+        }
+
+        .comment .comment-options .comment-actions button:hover {
+            color: #333;
+        }
+
+
+        .comment {
+            border: 1px solid black;
+            display: flex;
+            width: 80%;
+            gap: 1%;
+            align-items: center;
+            padding: 1%;
+            margin-bottom: 1%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main-container">
+        <!-- Top Navigation Bar -->
+        <div id="topNav">
+            <div id="hamburger">&#9776;</div>
+            <div>
+                <h1 id="welcomeName"></h1>
+            </div>
+            <div id="imageClick">
+                <img id="profileImg" src="" alt="Profile Image" />
+            </div>
+        </div>
+        <div id="hiddenFeatures">
+            <div>Your Account</div>
+            <div id="logOut">Logout</div>
+        </div>
+        <!-- Side Navigation Bar -->
+        <div id="sideNav">
+            <a href="#" class="closeBtn">&times;</a>
+            <a href="./home.html">Home</a>
+            <a href="./registerSpeaker.html">Register Speaker</a>
+            <a href="./videoUpload.html">Video Upload</a>
+            <a href="./videoList.html">All Videos</a>
+            <a href="./speakerList.html">Speaker's List</a>
+            <a href="./userlist.html">User's List</a>
+        </div>
+        <!-- MAIN CONTENT OF THE HOME PAGE -->
+        <div id="content">
+            <div id="videoBox">
+                <video id="videoPlayer" width="100%" height="100%" controls style="border-radius: 10px;">
+                    Your browser does not support the video tag.
+                </video>
+                <h2 id="videoTitle"></h2>
+                <div class="speakerBox">
+                    <img src="" alt="" id="speakerImage" />
+                    <p id="speakerName"></p>
+                </div>
+                <b class="commentBox">
+                    <span id="numberComments"></span>
+                    <p>Comments</p>
+                    <span id="numberLikes"></span>
+                    <p>Likes</p>
+                </b>
+                <div id="commentList">
+                    <!-- Fetch all the comments from here -->
+                </div>
+            </div>
+            <div id="referenceVideos">
+                <p>Other Videos</p>
+                <div id="otherVideoLink"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const otherVideoLink = document.getElementById("otherVideoLink");
+        const hamburger = document.getElementById("hamburger");
+        const sideNav = document.getElementById("sideNav");
+        const closeBtn = document.querySelector(".closeBtn");
+        const imageClick = document.querySelector("#imageClick");
+        const hiddenFeatures = document.querySelector("#hiddenFeatures");
+        const content = document.querySelector("#content");
+        const profileImg = document.getElementById("profileImg");
+        const welcomeName = document.getElementById("welcomeName");
+        const videoTitle = document.getElementById("videoTitle");
+        const videoPlayer = document.getElementById("videoPlayer");
+        const speakerName = document.getElementById("speakerName");
+        const speakerImage = document.getElementById("speakerImage");
+        const numberComments = document.getElementById("numberComments");
+        const numberLikes = document.getElementById("numberLikes");
+        const commentList = document.getElementById("commentList");
+        let token = sessionStorage.getItem("super-admin-token");
+
+        hamburger.addEventListener("click", () => {
+            sideNav.style.width = "250px";
+            content.style.transition = "margin-left 0.5s"; // Added transition
+            content.style.marginLeft = "20%";
+        });
+
+        closeBtn.addEventListener("click", () => {
+            sideNav.style.width = "0";
+            content.style.transition = "margin-left 0.5s"; // Added transition
+            content.style.marginLeft = "0%";
+        });
+
+        imageClick.addEventListener("click", () => {
+            hiddenFeatures.style.display =
+                hiddenFeatures.style.display === "block" ? "none" : "block";
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            if (!token) {
+                alert("You are not logged in, please log in again!");
+                window.location.href = "./index.html";
+            }
+
+            fetchUsersData(token);
+            const videoId = getQueryParam("id");
+            if (videoId) {
+                fetchVideo(videoId, token);
+            } else {
+                document.getElementById("videoBox").textContent =
+                    "No video ID provided.";
+            }
+        });
+
+        // Fetch data of the User
+        function fetchUsersData(token) {
+            fetch("http://13.235.49.6:9000/api/users/my-profile", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    profileImg.src = data.data.image;
+                    welcomeName.innerText = data.data.name;
+                });
+        }
+
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        function fetchVideo(id, token) {
+            fetch(`http://13.235.49.6:9000/api/content/get-content/?id=${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((res) => {
+                    if (!res.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return res.json();
+                })
+                .then((data) => {
+                    const videoData = data.data[0]; // Assuming the data is an array
+
+                    // Set video title
+                    document.getElementById('videoTitle').textContent = videoData.title;
+
+                    // Set speaker name and image
+                    const speakerName = document.getElementById('speakerName');
+                    speakerName.textContent = videoData.user.name;
+
+                    const speakerImage = document.getElementById('speakerImage');
+                    speakerImage.src = videoData.user.image || "https://th.bing.com/th/id/OIP.Y-YgLj--_sv6k_ZhzYhLAwAAAA?w=270&h=270&rs=1&pid=ImgDetMain"; // Default image if user has no image
+
+                    // Set number of comments
+                    document.getElementById('numberComments').innerText = videoData.comments.length;
+                    document.getElementById('numberLikes').innerText = videoData.likes.length;
+
+                    // Set video player source
+                    document.getElementById('videoPlayer').src = videoData.video;
+
+                    // Populate comments using document fragment
+                    const commentList = document.getElementById('commentList');
+                    const fragment = new DocumentFragment();
+                    videoData.comments.forEach(comment => {
+                        const commentDiv = document.createElement('div');
+                        commentDiv.classList.add('comment');
+
+                        const commentImg = document.createElement('img');
+                        commentImg.src = comment.user.image || "https://th.bing.com/th/id/OIP.Y-YgLj--_sv6k_ZhzYhLAwAAAA?w=270&h=270&rs=1&pid=ImgDetMain"; // Default image if user has no image
+                        commentImg.alt = 'User Image';
+                        commentImg.classList.add('commentBoxImage');
+
+                        const commentUserInfo = document.createElement('div');
+
+                        const commentUserName = document.createElement('p');
+                        commentUserName.textContent = comment.user.name;
+
+                        const commentText = document.createElement('p');
+                        commentText.textContent = comment.text;
+
+                        const commentDeleteButton = document.createElement('button');
+                        commentDeleteButton.textContent = "DELETE";
+                        commentDeleteButton.addEventListener('click', () => deleteComment(comment.id, token));
+
+                        commentUserInfo.append(commentUserName, commentText, commentDeleteButton);
+
+                        commentDiv.appendChild(commentImg);
+                        commentDiv.appendChild(commentUserInfo);
+
+                        fragment.appendChild(commentDiv);
+                    });
+                    commentList.innerHTML = ''; // Clear previous comments
+                    commentList.appendChild(fragment);
+
+                    // Fetch other videos from the same speaker
+                    fetchOtherVideos(id, videoData.userID, token);
+                })
+                .catch((error) => {
+                    console.error("Error fetching video data:", error);
+                    document.getElementById("videoBox").textContent = "Error loading video data.";
+                });
+        }
+
+        function deleteComment(commentId, token) {
+            fetch(`http://13.235.49.6:9000/api/content/comment/delete/${commentId}`, {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                }
+            })
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error('Failed to delete comment');
+                    }
+                    return res.json();
+                })
+                .then((data) => {
+                    const videoId = getQueryParam("id");
+                    if (videoId) {
+                        fetchVideo(videoId, token);
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error deleting comment:", error);
+                    // Handle error (e.g., show a message to the user)
+                });
+        }
+
+
+
+        function fetchOtherVideos(id, userID, token) {
+            fetch(
+                `http://13.235.49.6:9000/api/content/get-content/?userID=${userID}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                }
+            )
+                .then((res) => res.json())
+                .then((data) => {
+                    let filterData = data.data.filter((items) => items.id != id);
+                    otherVideoLink.innerHTML = ""; // Clear previous content
+
+                    if (filterData.length === 0) {
+                        otherVideoLink.textContent = "No other videos available.";
+                    } else {
+                        filterData.forEach((video) => {
+                            const videoDiv = document.createElement("div");
+                            videoDiv.classList.add("other-video");
+
+                            const thumbnail = document.createElement("img");
+                            thumbnail.src = video.thumbNail;
+                            thumbnail.alt = "Video Thumbnail";
+
+                            const titleLink = document.createElement("a");
+                            titleLink.href = `videoBox.html?id=${video.id}`;
+                            titleLink.textContent = video.title;
+
+                            videoDiv.appendChild(thumbnail);
+                            videoDiv.appendChild(titleLink);
+                            otherVideoLink.appendChild(videoDiv);
+                        });
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error fetching other videos:", error);
+                });
+        }
+    </script>
+    <script src="./js/overall.js"></script>
+</body>
+
+</html>

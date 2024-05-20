@@ -9,77 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit&display=swap" rel="stylesheet">
-    <style>
-        /* Global Styles */
-        body {
-            margin: 0;
-            font-family: 'Outfit', sans-serif;
-        }
-
-        #content {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            height: 99%;
-            background-color: #f4f4f4;
-        }
-
-        .form-container {
-            background-color: #fff;
-            box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-            padding: 1%;
-            margin-top: 1%;
-            border-radius: 10px;
-            width: 80%;
-            text-align: center;
-        }
-
-        h1 {
-            color: #333;
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-            text-align: left;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #555;
-        }
-
-        .form-group input, 
-        .form-group textarea, 
-        .form-group select {
-            width: 98%;
-            padding: 10px;
-            border: 1px solid #612626;
-            border-radius: 5px;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-        }
-
-        .form-group button {
-            width: 100%;
-            padding: 10px;
-            background-color: #5cb85c;
-            border: none;
-            border-radius: 5px;
-            color: #fff;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .form-group button:hover {
-            background-color: #4cae4c;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -100,44 +31,61 @@
         </div>
         <!-- Side Navigation Bar -->
         <div id="sideNav">
-            <a href="#" class="closeBtn">&times;</a>
-            <a href="./home.html">Home</a>
-            <a href="./registerSpeaker.html">Register Speaker</a>
-            <a href="./videoUpload.html">Video Upload</a>
-            <a href="./videoList.html">All Videos</a>
-            <a href="./speakerList.html">Speaker's List</a>
-            <a href="./userlist.html">User's List</a>
+            <button class="closeBtn">&times;</button>
+            <ul>
+                <li><i class="fas fa-home"></i><a href="./home.html">Home</a></li>
+                <li><i class="fas fa-volume-up"></i> <a href="./registerSpeaker.html">Register Speaker</a></li>
+                <li><i class="fas fa-upload"></i><a href="./videoUpload.html">Video Upload</a></li>
+                <li> <i class="fas fa-video"></i><a href="./videoList.html">All Videos</a></li>
+                <li><i class="fas fa-headphones"></i> <a href="./speakerList.html">Speaker's List</a></li>
+                <li><i class="fas fa-address-book"></i><a href="./userlist.html">User's List</a></li>
+            </ul>
         </div>
         <!-- MAIN CONTENT OF THE HOME PAGE -->
         <div id="content">
-            <div class="form-container">
-                <h1>Register</h1>
-                <form id="registrationForm">
-                    <div class="form-group">
-                        <label for="image">Image</label>
-                        <input type="file" id="image" name="image" required>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-5 col-md-5 col-sm-12">
+                        <img src="https://img.freepik.com/free-vector/sign-page-abstract-concept-illustration-enter-application-mobile-screen-user-login-form-website-page-interface-ui-new-profile-registration-email-account_335657-936.jpg?t=st=1716190510~exp=1716194110~hmac=19800f6e0895b257da1eab93ad76d5b65b3d6bf11728e0c8bfd303bcd1453706&w=740"
+                            alt="">
                     </div>
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" name="name" required>
+                    <div class="col-lg-7 col-md-7 col-sm-12">
+                        <div class="form-container">
+                            <h1>Register</h1>
+                            <form id="registrationForm">
+                                <div class="divide">
+                                    <div class="form-group">
+                                        <label for="image">Image</label>
+                                        <input type="file" id="image" name="image" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Name</label>
+                                        <input type="text" id="name" name="name" required>
+                                    </div>
+                                </div>
+                                <div class="divide">
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <input type="email" id="email" name="email" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password">Password</label>
+                                        <input type="password" id="password" name="password" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="bio">Bio</label>
+                                    <textarea id="bio" name="bio" rows="4" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit">Register</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" id="password" name="password" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="bio">Bio</label>
-                        <textarea id="bio" name="bio" rows="4" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit">Register</button>
-                    </div>
-                </form>
+                </div>
             </div>
+
         </div>
     </div>
 
@@ -237,31 +185,32 @@
 
         // Registration Form Submission
         const registrationForm = document.getElementById('registrationForm');
-        registrationForm.addEventListener('submit', function(event) {
+        registrationForm.addEventListener('submit', function (event) {
             event.preventDefault();
 
             const formData = new FormData(registrationForm);
-            formData.append('role','manager')
+            formData.append('role', 'manager')
 
             fetch('http://13.235.49.6:9000/api/users/email-register', {
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status) {
-                    alert('Registration successful!');
-                    registrationForm.reset();
-                } else {
-                    alert('Registration failed: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Registration failed: ' + error.message);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status) {
+                        alert('Registration successful!');
+                        registrationForm.reset();
+                    } else {
+                        alert('Registration failed: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Registration failed: ' + error.message);
+                });
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

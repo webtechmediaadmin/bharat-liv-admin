@@ -46,17 +46,20 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-5 col-md-5 col-sm-12">
-                        <img src="https://img.freepik.com/free-vector/sign-page-abstract-concept-illustration-enter-application-mobile-screen-user-login-form-website-page-interface-ui-new-profile-registration-email-account_335657-936.jpg?t=st=1716190510~exp=1716194110~hmac=19800f6e0895b257da1eab93ad76d5b65b3d6bf11728e0c8bfd303bcd1453706&w=740"
+                        <img src="https://img.freepik.com/free-vector/hand-drawn-essay-illustration_23-2150292676.jpg?t=st=1716363286~exp=1716366886~hmac=de2183f6ca3b46221a88319363c743a519a93ca9edd600506744fbbf3e5426f7&w=740"
                             alt="">
                     </div>
                     <div class="col-lg-7 col-md-7 col-sm-12">
                         <div class="form-container">
-                            <h1>Register</h1>
+                            <h1>Registeration</h1>
+                            <span>Please Fill The Form To Register...</span>
                             <form id="registrationForm">
                                 <div class="divide">
                                     <div class="form-group">
-                                        <label for="image">Image</label>
-                                        <input type="file" id="image" name="image" required>
+                                        <label for="name">Upload Image</label>
+                                        <input type="file" name="file1[]" data-multiple-caption="{count} files selected"
+                                            class="file-control" multiple id="file1">
+                                        <label for="file1" class="label-file"><span>Choose file</span></label>
                                     </div>
                                     <div class="form-group">
                                         <label for="name">Name</label>
@@ -78,7 +81,7 @@
                                     <textarea id="bio" name="bio" rows="4" required></textarea>
                                 </div>
                                 <div class="form-group">
-                                    <button type="submit">Register</button>
+                                    <button type="submit">Register Now</button>
                                 </div>
                             </form>
                         </div>

@@ -116,7 +116,14 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     max-width: 400px;
     width: 100%;
+    margin: 0px auto;
     text-align: center;
+}
+
+.img-sec img {
+    width: 170px;
+    margin: 0px auto;
+    padding-bottom: 30px;
 }
 
 .login-container h2 {
@@ -338,4 +345,9 @@ h1 {
 
 .form-group button:hover {
     background-color: #4cae4c;
+}
+
+.body-sec {
+    background-color: #f9f9f9;
+    padding: 65px 0px;
 }

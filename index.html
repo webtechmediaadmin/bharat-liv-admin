@@ -34,35 +34,33 @@
 
                 <button onclick="login()">LOGIN</button>
             </form>
-        </div>
-    </div>
-    <script>
-        function login() {
-            let email = document.getElementById("email").value;
-            let password = document.getElementById("password").value;
-            fetch("http://13.235.49.6:9000/api/users/email-login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ email, password }),
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    if (data.status) {
-                        if (data.data.role == "super-admin") {
-                            sessionStorage.setItem("super-admin-token", data.token);
-                            window.location.href = './home.html';
-                        } else {
-                            alert("You are not authorized here!")
-                        }
-                    } else {
-                        alert(data.message)
-                    }
-                });
-        }
-    </script>
-    <script src="./js/overall.js"></script>
+            <script>
+                function login() {
+                    let email = document.getElementById("email").value;
+                    let password = document.getElementById("password").value;
+                    fetch("http://13.235.49.6:9000/api/users/email-login", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ email, password }),
+                    })
+                        .then((res) => res.json())
+                        .then((data) => {
+                            if (data.status) {
+                                if (data.data.role == "super-admin") {
+                                    sessionStorage.setItem("super-admin-token", data.token);
+                                    window.location.href = './home.html';
+                                } else {
+                                    alert("You are not authorized here!")
+                                }
+                            } else {
+                                alert(data.message)
+                            }
+                        });
+                }
+            </script>
+            <script src="./js/overall.js"></script>
 </body>
 
 </html>

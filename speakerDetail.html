@@ -16,16 +16,35 @@
             font-family: outfit;
         }
 
-
         #content {
             display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
         .content-box {
+            background-color: #fff;
             box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
             margin: 1%;
-            padding: 2%;
-            border-radius: 5px;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            flex: 1 1 300px;
+            /* Adjust width as needed */
+            max-width: 400px;
+            /* Maximum width of the box */
+        }
+
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #555;
+            font-size: 18px;
         }
     </style>
 </head>
@@ -60,15 +79,15 @@
         <div id="content">
             <div class="content-box">
                 <h1>Total Video Posted</h1>
-                <h2></h2>
+                <h2 id="videoPostedCount"></h2>
             </div>
             <div class="content-box">
                 <h1>Total Video Approved</h1>
-                <h2></h2>
+                <h2 id="videoApprovedCount"></h2>
             </div>
             <div class="content-box">
                 <h1>Total Video Pending</h1>
-                <h2></h2>
+                <h2 id="videoNotApprovedCount"></h2>
             </div>
         </div>
     </div>
@@ -80,6 +99,9 @@
         const imageClick = document.querySelector("#imageClick");
         const hiddenFeatures = document.querySelector("#hiddenFeatures");
         const content = document.querySelector("#content");
+        const videoPostedCount = document.querySelector("#videoPostedCount");
+        const videoApprovedCount = document.querySelector("#videoApprovedCount");
+        const videoNotApprovedCount = document.querySelector("#videoNotApprovedCount");
 
         hamburger.addEventListener("click", () => {
             sideNav.style.width = "250px";
@@ -110,6 +132,9 @@
             }
 
             fetchUsersData(token);
+            fetchApprovedCount(token);
+            fetchPostedCount(token);
+            fetchNotApprovedCount(token);
         });
 
         // Fetch data of the User
@@ -122,11 +147,53 @@
             })
                 .then((res) => res.json())
                 .then((data) => {
-                    console.log(data);
                     profileImg.src = data.data.image;
                     welcomeName.innerText = data.data.name;
                 });
         }
+
+        
+        function fetchApprovedCount(token) {
+            fetch("http://13.235.49.6:9000/api/content/videos?hasApprovedByAdmin=1", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    videoPostedCount.innerText = data.count;
+                });
+        }
+
+
+        function fetchPostedCount(token) {
+            fetch("http://13.235.49.6:9000/api/content/get-content/super-admin", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    videoApprovedCount.innerText = data.count;
+                });
+        }
+
+
+        function fetchNotApprovedCount(token) {
+            fetch("http://13.235.49.6:9000/api/content/videos?hasApprovedByAdmin=0", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    videoNotApprovedCount.innerText = data.count;
+                });
+        }
+
     </script>
     <script src="./js/overall.js"></script>
 </body>

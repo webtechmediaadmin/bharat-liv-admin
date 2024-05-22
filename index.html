@@ -7,60 +7,73 @@
     <link rel="stylesheet" href="css/topNav.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css" />
     <title>Login Page</title>
-
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('img/logo.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="body-sec">
+    <div class="login-container">
+        <h2>Login</h2>
+        <form>
+            <h3>User Email</h3>
+            <div class="input-text">
+                <i class="fas fa-user material-icons"></i>
+                <input type="text" name="email" id="email" placeholder="Type your email address" required>
+            </div>
+            <h3>Password</h3>
 
+            <div class="input-text">
+                <i class="fas fa-lock  material-icons"></i>
+                <input type="password" name="password" id="password" placeholder="Type your password" required>
+            </div>
 
-        <div class="img-sec">
-            <img src="img/logo.png" alt="">
-        </div>
-        <div class="login-container">
-            <h2>Login</h2>
-            <form>
-                <h3>User Email</h3>
-                <div class="input-text">
-                    <i class="fas fa-user material-icons"></i>
-                    <input type="text" name="email" id="email" placeholder="Type your email address" required>
-                </div>
-                <h3>Password</h3>
-
-                <div class="input-text">
-                    <i class="fas fa-lock  material-icons"></i>
-                    <input type="password" name="password" id="password" placeholder="Type your password" required>
-                </div>
-
-                <button onclick="login()">LOGIN</button>
-            </form>
-            <script>
-                function login() {
-                    let email = document.getElementById("email").value;
-                    let password = document.getElementById("password").value;
-                    fetch("http://13.235.49.6:9000/api/users/email-login", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({ email, password }),
-                    })
-                        .then((res) => res.json())
-                        .then((data) => {
-                            if (data.status) {
-                                if (data.data.role == "super-admin") {
-                                    sessionStorage.setItem("super-admin-token", data.token);
-                                    window.location.href = './home.html';
-                                } else {
-                                    alert("You are not authorized here!")
-                                }
+            <button id="loginButton">LOGIN</button>
+        </form>
+        <script>
+            function login() {
+                let email = document.getElementById("email").value;
+                let password = document.getElementById("password").value;
+                fetch("http://13.235.49.6:9000/api/users/email-login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ email, password }),
+                })
+                    .then((res) => res.json())
+                    .then((data) => {
+                        if (data.status) {
+                            if (data.data.role == "super-admin") {
+                                sessionStorage.setItem("super-admin-token", data.token);
+                                window.location.href = './home.html';
                             } else {
-                                alert(data.message)
+                                alert("You are not authorized here!")
                             }
-                        });
-                }
-            </script>
-            <script src="./js/overall.js"></script>
+                        } else {
+                            alert(data.message)
+                        }
+                    });
+            }
+
+            document.getElementById('loginButton').addEventListener("click",(e)=>{
+                e.preventDefault();
+
+                
+                login()
+            })
+        </script>
+        <script src="./js/overall.js"></script>
 </body>
 
 </html>

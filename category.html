@@ -193,6 +193,7 @@
             <a href="#" class="closeBtn">&times;</a>
             <a href="./home.html">Home</a>
             <a href="./registerSpeaker.html">Register Speaker</a>
+            <a href="./category.html">Category List</a>
             <a href="./videoUpload.html">Video Upload</a>
             <a href="./videoList.html">All Videos</a>
             <a href="./speakerList.html">Speaker's List</a>
@@ -206,6 +207,7 @@
                     <input type="text" name="title" id="categoryName">
                     <button onclick="addCategory()">Add Category</button>
                 </div>
+                <h4>Available Categories</h4>
                 <table>
                     <thead>
                         <tr>
@@ -225,7 +227,7 @@
     <div id="editFormContainer">
         <button id="closeEditForm">&times;</button>
         <form id="editForm">
-            <input type="hidden" id="editId" />
+            <input type="hidden" id="editId" name="id" />
             <label for="editTitle">Title</label>
             <input type="text" id="editTitle" name="editTitle" required />
             <label for="editTotalVideos">Total Videos</label>
@@ -244,6 +246,7 @@
         const videoTableBody = document.getElementById("videoTableBody");
         const editFormContainer = document.getElementById("editFormContainer");
         const editForm = document.getElementById("editForm");
+        const token = sessionStorage.getItem("super-admin-token");
 
         hamburger.addEventListener("click", () => {
             sideNav.style.width = "250px";
@@ -260,20 +263,11 @@
                 hiddenFeatures.style.display === "block" ? "none" : "block";
         });
 
-        let mainContainer = document.getElementById("main-container");
-        let profileImg = document.getElementById("profileImg");
-        let welcomeName = document.getElementById("welcomeName");
-        let closeEditForm = document.getElementById("closeEditForm");
-        let token = sessionStorage.getItem("super-admin-token");
-
-        closeEditForm.addEventListener("click", () => {
-            editFormContainer.style.display = "none";
-        });
-
         document.addEventListener("DOMContentLoaded", () => {
             if (!token) {
                 alert("You are not logged in, please log in again!");
                 window.location.href = "./index.html";
+                return;
             }
 
             fetchUsersData(token);
@@ -294,77 +288,78 @@
                 });
         }
 
-        function fetchVideos() {
-            let fetchUrl = "http://13.235.49.6:9000/api/categories/";
+        function fetchData() {
+            const fetchUrl = "http://13.235.49.6:9000/api/categories/";
 
-            fetch(fetchUrl, {
+            return fetch(fetchUrl, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json",
                 },
             })
-                .then((res) => res.json())
-                .then((data) => {
-                    data.data.forEach((element, index) => {
-                        const newRow = videoTableBody.insertRow(); // Create a new row in the table
-                        // Insert cells and add content to the row
-                        newRow.insertCell().textContent = element.title;
-                        newRow.cells[0].style.width = "200px";
-                        newRow.insertCell().textContent = element.totalVideos;
-
-                        // Create status switch
-                        const statusCell = newRow.insertCell();
-                        const statusSwitch = document.createElement("label");
-                        statusSwitch.classList.add("switch");
-
-                        const statusInput = document.createElement("input");
-                        statusInput.type = "checkbox";
-                        statusInput.checked = element.status;
-                        statusSwitch.appendChild(statusInput);
-
-                        const statusSlider = document.createElement("span");
-                        statusSlider.classList.add("slider", "round");
-                        statusSwitch.appendChild(statusSlider);
-
-                        statusCell.appendChild(statusSwitch);
-
-                        statusSwitch.addEventListener("change", () => {
-                            statusChanger(element.id);
-                        });
-
-                        // Create more options cell with edit and delete buttons
-                        const moreOptionsCell = newRow.insertCell();
-                        moreOptionsCell.classList.add("more-options-cell");
-
-                        const editBtn = document.createElement("button");
-                        editBtn.textContent = "Edit";
-                        editBtn.addEventListener("click", (event) => {
-                            event.stopPropagation(); // Prevent the row click event
-                            openEditForm(element);
-                        });
-
-                        const deleteBtn = document.createElement("button");
-                        deleteBtn.textContent = "Delete";
-                        deleteBtn.style.backgroundColor = "red";
-                        deleteBtn.style.color = "white";
-                        deleteBtn.addEventListener("click", (event) => {
-                            event.stopPropagation(); // Prevent the row click event
-                            const parentRow = deleteBtn.closest("tr");
-                            parentRow.classList.add("fade-out");
-                            parentRow.addEventListener("animationend", () => {
-                                parentRow.remove();
-                            });
-                            deleteVideo(element.id);
-                        });
-
-                        moreOptionsCell.appendChild(editBtn);
-                        moreOptionsCell.appendChild(deleteBtn);
-                    });
+                .then(res => res.json())
+                .then(data => {
+                    return data.data;
                 });
         }
 
+        function fetchVideos() {
+            fetchData().then(data => {
+                videoTableBody.innerHTML = ''; // Clear the table body
+                data.forEach(element => {
+                    const newRow = videoTableBody.insertRow();
+                    newRow.dataset.id = element.id; // Add a data attribute for the id
+
+                    newRow.insertCell().textContent = element.title;
+                    newRow.cells[0].style.width = "200px";
+                    newRow.insertCell().textContent = element.totalVideos;
+
+                    const statusCell = newRow.insertCell();
+                    const statusSwitch = document.createElement("label");
+                    statusSwitch.classList.add("switch");
+
+                    const statusInput = document.createElement("input");
+                    statusInput.type = "checkbox";
+                    statusInput.checked = element.status;
+                    statusSwitch.appendChild(statusInput);
+
+                    const statusSlider = document.createElement("span");
+                    statusSlider.classList.add("slider", "round");
+                    statusSwitch.appendChild(statusSlider);
+
+                    statusCell.appendChild(statusSwitch);
+
+                    statusSwitch.addEventListener("change", () => {
+                        statusChanger(element.id);
+                    });
+
+                    const moreOptionsCell = newRow.insertCell();
+                    moreOptionsCell.classList.add("more-options-cell");
+
+                    const editBtn = document.createElement("button");
+                    editBtn.textContent = "Edit";
+                    editBtn.addEventListener("click", (event) => {
+                        event.stopPropagation();
+                        openEditForm(element);
+                    });
+
+                    const deleteBtn = document.createElement("button");
+                    deleteBtn.textContent = "Delete";
+                    deleteBtn.style.backgroundColor = "red";
+                    deleteBtn.style.color = "white";
+                    deleteBtn.addEventListener("click", (event) => {
+                        event.stopPropagation();
+                        deleteCategory(element.id);
+                    });
+
+                    moreOptionsCell.appendChild(editBtn);
+                    moreOptionsCell.appendChild(deleteBtn);
+                });
+            });
+        }
+
         function statusChanger(id) {
-            fetch(`http://13.235.49.6:9000/api/content/handle-status/${id}`, {
+            fetch(`http://13.235.49.6:9000/api/categories/handle-status/${id}`, {
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -377,7 +372,7 @@
                 });
         }
 
-        function deleteVideo(id) {
+        function deleteCategory(id) {
             fetch(`http://13.235.49.6:9000/api/categories/delete-categories/${id}`, {
                 method: "DELETE",
                 headers: {
@@ -388,6 +383,7 @@
                 .then((res) => res.json())
                 .then((data) => {
                     console.log(data);
+                    fetchVideos(); // Refresh the table after deletion
                 });
         }
 
@@ -401,37 +397,31 @@
         editForm.addEventListener("submit", (event) => {
             event.preventDefault();
             const formData = new FormData(editForm);
-            updateVideoData(formData);
+            updateCategoryData(formData);
         });
 
-        function updateVideoData(formData) {
-            fetch(`http://13.235.49.6:9000/api/categories/edit-categories/${formData.get("id")}`, {
+        function updateCategoryData(formData) {
+            const id = formData.get("id");
+            const title = formData.get("editTitle");
+            const totalVideos = formData.get("editTotalVideos");
+
+            fetch(`http://13.235.49.6:9000/api/categories/edit-categories/${id}`, {
                 method: "PATCH",
                 headers: {
                     Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
                 },
-                body: formData,
+                body: JSON.stringify({ title, totalVideos }),
             })
                 .then((res) => res.json())
                 .then((data) => {
                     console.log(data);
-                    // Instead of reloading, you can update the table row with the new data here
-                    // Example: updateTableRow(formData.get("id"), formData.get("editTitle"), formData.get("editTotalVideos"));
-                    editFormContainer.style.display = "none"; // Hide the edit form after submission
+                    fetchVideos(); // Refresh the table after editing
+                    editFormContainer.style.display = "none";
                 })
                 .catch((error) => console.error("Error:", error));
         }
 
-        // Function to update the table row with the edited data
-        function updateTableRow(id, title, totalVideos) {
-            const row = document.querySelector(`#videoTableBody tr[data-id="${id}"]`);
-            if (row) {
-                row.cells[0].textContent = title;
-                row.cells[1].textContent = totalVideos;
-            }
-        }
-
-        // Function to add a new category
         function addCategory() {
             const categoryName = document.getElementById("categoryName").value;
             if (categoryName.trim() === "") {
@@ -449,8 +439,9 @@
             })
                 .then((res) => res.json())
                 .then((data) => {
-                    console.log(data);Ṇ
-                    document.getElementById("categoryName").value = ""; // Clear input field after adding
+                    console.log(data);
+                    fetchVideos(); // Refresh the table after adding
+                    document.getElementById("categoryName").value = "";
                 })
                 .catch((error) => console.error("Error:", error));
         }

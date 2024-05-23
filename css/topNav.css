@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Mukta:wght@200;300;400;500;600;700;800&family=Playfair+Display:ital@0;1&family=Poetsen+One&family=Raleway:ital,wght@0,100..900;1,100..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
+* {
+    padding: 0px;
+    margin: 0px;
+}
+
 /* Top Navigation Bar Styles */
 #topNav {
     display: flex;
@@ -284,14 +289,6 @@ div#sideNav ul li i {
 }
 
 /* registration speaker */
-#content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    height: 99%;
-}
-
 .form-container {
     background-color: #fff;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
@@ -299,7 +296,7 @@ div#sideNav ul li i {
     margin-top: 1%;
     border-radius: 10px;
     width: 80%;
-    text-align: center;
+    text-align: left;
 }
 
 h1 {
@@ -316,15 +313,18 @@ h1 {
 .form-group label {
     display: block;
     margin-bottom: 5px;
-    color: #555;
+    color: black;
+    font-weight: 500;
+    font-size: 17px;
+    font-family: inherit;
 }
 
 .form-group input,
 .form-group textarea,
 .form-group select {
-    width: 98%;
-    padding: 10px;
-    border: 1px solid #612626;
+    width: 100%;
+    padding: 6px 37px;
+    border: 1px solid #46154f;
     border-radius: 5px;
 }
 
@@ -335,11 +335,11 @@ h1 {
 .form-group button {
     width: 100%;
     padding: 10px;
-    background-color: #5cb85c;
+    background-color: #46154f;
     border: none;
     border-radius: 5px;
     color: #fff;
-    font-size: 16px;
+    font-size: 19px;
     cursor: pointer;
 }
 
@@ -350,4 +350,231 @@ h1 {
 .body-sec {
     background-color: #f9f9f9;
     padding: 65px 0px;
+}
+
+/* form css */
+.divide {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.file-control {
+    display: none;
+}
+
+.label-file {
+    width: 37vh;
+    height: 40px;
+    display: inline-block;
+    position: relative;
+    background-color: #fff;
+    padding: 5px 50px 5px 15px;
+    border-radius: 4px;
+    border: 1px solid #46154f;
+    vertical-align: middle;
+    overflow: hidden;
+    line-height: 30px;
+}
+
+.label-file:after {
+    content: "Browse";
+    position: absolute;
+    background-color: #46154f;
+    right: 0;
+    top: 0;
+    height: 38px;
+    display: inline-block;
+    padding: 8px 15px 0;
+    color: #fff;
+    line-height: 20px;
+}
+
+form#registrationForm {
+    padding: 46px 13px 0px;
+}
+
+.form-container h1 {
+    font-family: unset;
+    font-size: 37px;
+    letter-spacing: 1px;
+    padding-left: 10px;
+}
+
+.form-container span {
+    padding-left: 10px;
+}
+
+
+/* video-list-css */
+.content-box {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+        rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    margin: 1%;
+    padding: 2%;
+    border-radius: 5px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th,
+td {
+    padding: 10px;
+    text-align: center;
+}
+
+tr {
+    border: 1px solid #ccc;
+}
+
+th {
+    background-color: #46154f;
+    color: white;
+    font-weight: 500;
+}
+
+.more-options-cell {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.more-options-cell button {
+    padding: 5px 15px;
+    border: none;
+    cursor: pointer;
+    background: #09c040;
+    cursor: pointer;
+    color: white;
+    border-radius: 3px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+}
+
+input:checked+.slider {
+    background-color: #2196f3;
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked+.slider:before {
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+#editFormContainer {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 100%);
+    /* Start the form below the visible area */
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    animation: slideUp 0.5s forwards;
+    /* Add the animation */
+}
+
+@keyframes slideUp {
+    from {
+        transform: translate(-50%, 100%);
+        /* Start position */
+    }
+
+    to {
+        transform: translate(-50%, -50%);
+        /* End position */
+    }
+}
+
+#editFormContainer form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#editFormContainer input,
+#editFormContainer textarea,
+#editFormContainer select {
+    width: 90%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#editFormContainer button {
+    padding: 10px;
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#editFormContainer button:hover {
+    background-color: #4cae4c;
+}
+
+#editFormContainer #closeEditForm {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    padding: 5px;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+input[type="search"] {
+    border: 1px solid #aba8a8b5;
+    border-radius: 12px;
 }

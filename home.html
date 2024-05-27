@@ -49,16 +49,6 @@
                 <h1>Total Video Posted</h1>
                 <p id="videoPostedCount"></p>
             </div>
-            <div class="content-box green">
-                <img src="img/video-approved.png" alt="">
-                <h1>Total Video Approved</h1>
-                <p id="videoApprovedCount"></p>
-            </div>
-            <div class="content-box lilac">
-                <img src="img/video-pending.png" alt="">
-                <h1>Total Video Pending</h1>
-                <p id="videoNotApprovedCount"></p>
-            </div>
         </div>
     </div>
 
@@ -69,9 +59,7 @@
         const imageClick = document.querySelector("#imageClick");
         const hiddenFeatures = document.querySelector("#hiddenFeatures");
         const content = document.querySelector("#content");
-        const videoPostedCount = document.querySelector("#videoPostedCount");
-        const videoApprovedCount = document.querySelector("#videoApprovedCount");
-        const videoNotApprovedCount = document.querySelector("#videoNotApprovedCount");
+        const videoPostedCount = document.getElementById("videoPostedCount");
 
         hamburger.addEventListener("click", () => {
             sideNav.style.width = "250px";
@@ -102,9 +90,7 @@
             }
 
             fetchUsersData(token);
-            fetchApprovedCount(token);
             fetchPostedCount(token);
-            fetchNotApprovedCount(token);
         });
 
         // Fetch data of the User
@@ -123,8 +109,9 @@
         }
 
 
-        function fetchApprovedCount(token) {
-            fetch("http://13.235.49.6:9000/api/content/videos?hasApprovedByAdmin=1", {
+
+        function fetchPostedCount(token) {
+            fetch("http://13.235.49.6:9000/api/content/get-content/super-admin", {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json",
@@ -136,33 +123,6 @@
                 });
         }
 
-
-        function fetchPostedCount(token) {
-            fetch("http://13.235.49.6:9000/api/content/get-content/super-admin", {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    videoApprovedCount.innerText = data.count;
-                });
-        }
-
-
-        function fetchNotApprovedCount(token) {
-            fetch("http://13.235.49.6:9000/api/content/videos?hasApprovedByAdmin=0", {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    videoNotApprovedCount.innerText = data.count;
-                });
-        }
 
     </script>
     <script src="./js/overall.js"></script>
